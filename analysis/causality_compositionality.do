@@ -6,7 +6,7 @@ set scheme sj
 
 
 /* pilot, labels */
-use "causality_compositionality_pilot.dta", clear
+use "pilot.dta", clear
 
 label define gen_lb 1 "Female" 2 "Diverse" 3 "Male"
    label values gen gen_lb
@@ -429,7 +429,7 @@ restore
 
 
 /* main study, labels */
-use "causality_compositionality_main.dta", clear
+use "main.dta", clear
 
 label define gen_lb 1 "Female" 2 "Diverse" 3 "Male"
    label values gen gen_lb
