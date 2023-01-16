@@ -6,7 +6,7 @@ set scheme sj
 
 
 /* pilot, labels */
-use "pilot.dta", clear
+use "data_pilot.dta", clear
 
 label define gen_lb 1 "Female" 2 "Diverse" 3 "Male"
    label values gen gen_lb
@@ -429,7 +429,7 @@ restore
 
 
 /* main study, labels */
-use "main.dta", clear
+use "data_main.dta", clear
 
 label define gen_lb 1 "Female" 2 "Diverse" 3 "Male"
    label values gen gen_lb
