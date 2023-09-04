@@ -30,3 +30,7 @@
 *.synctex.gz
 *.synctex.gz(busy)
 *.pdfsync
+
+# Beamer auxiliary files
+*.nav
+*.snm
