@@ -9,4 +9,4 @@ This is a repository for the paper [“Poisoned Babies, Shot Fathers, and Ruined
 
 [^1]: Bauer, Alexander Max, and Stephan Kornmesser (2023): “Poisoned Babies, Shot Fathers, and Ruined Experiments. Experimental Evidence in Favor of the Compositionality Constraint of Actual Causation”. _Philosophy of Science_ 90 (3), 489–517.
 [^2]: Livengood, Jonathan, and Justin Sytsma (2020): “Actual Causation and Compositionality”. _Philosophy of Science_ 87 (1), 43–69.
-[^3]: Bauer, Alexander Max, and Jan Romann (): “Answers at Gunpoint. On Livengood and Sytsma’s Revolver Case”. _Philosophy of Science_ 89 (1), 180–192.
+[^3]: Bauer, Alexander Max, and Jan Romann (2022): “Answers at Gunpoint. On Livengood and Sytsma’s Revolver Case”. _Philosophy of Science_ 89 (1), 180–192.
