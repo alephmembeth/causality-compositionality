@@ -2219,5 +2219,4 @@ preserve
    esize twosample temp, by(condition) glassdelta
 restore
 
-
 exit
