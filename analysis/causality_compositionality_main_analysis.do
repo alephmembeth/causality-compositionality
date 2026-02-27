@@ -478,7 +478,7 @@ preserve /* Vignette 1, combination */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "cup_com_hist_3.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_cup_com_hist_3.pdf", as(pdf) replace
 
    reshape long vig1com, i(id) j(statement)
 
