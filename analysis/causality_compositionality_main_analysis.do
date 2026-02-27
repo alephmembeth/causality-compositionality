@@ -1,512 +1,106 @@
-/* header */
+/* Header */
 version 14.2
 
 set more off, permanently
 set scheme sj
 
 
-/* pilot, labels */
-use "data_pilot.dta", clear
+/* Labels */
+use "causality_compositionality_main_data.dta", clear
 
-label define gen_lb 1 "Female" 2 "Diverse" 3 "Male"
+label define gen_lb 1 "Female" ///
+                    2 "Diverse" ///
+                    3 "Male"
    label values gen gen_lb
 
-label define edu_lb 1 "Without School Qualification" 2 "Still in School" 3 "Secondary Modern School Qualification" 4 "Polytechnic Secondary School Qualification" 5 "Secondary School Qualification" 6 "University (of Applied Sciences) Entrance Qualification" 7 "Dual Vocational Education and Training" 8 "Professional School Degree" 9 "University of Applied Sciences Degree" 10 "University Degree" 11 "Bachelor" 12 "Master" 13 "Magister" 14 "Diploma" 15 "Doctorate" 16 "Habilitation"
+label define edu_lb 1 "Without School Qualification" ///
+                    2 "Still in School" ///
+                    3 "Secondary Modern School Qualification" ///
+                    4 "Polytechnic Secondary School Qualification" ///
+                    5 "Secondary School Qualification" ///
+                    6 "University (of Applied Sciences) Entrance Qualification" ///
+                    7 "Dual Vocational Education and Training" ///
+                    8 "Professional School Degree" ///
+                    9 "University of Applied Sciences Degree" ///
+                   10 "University Degree" ///
+                   11 "Bachelor" ///
+                   12 "Master" ///
+                   13 "Magister" ///
+                   14 "Diploma" ///
+                   15 "Doctorate" ///
+                   16 "Habilitation"
    label values edu edu_lb
 
-la var id    "Identification Number"
-la var study "Study"
-la var rep1  "Replication 1"
-la var rep2  "Replication 2"
-la var eve11 "Event (1) 1"
-la var eve12 "Event (1) 2"
-la var eve21 "Event (2) 1"
-la var eve22 "Event (2) 2"
-la var def11 "Term (1) 1"
-la var def12 "Term (1) 2"
-la var def21 "Term (2) 1"
-la var def22 "Term (2) 1"
-la var cha1  "Chain 1"
-la var cha2  "Chain 2"
-la var cha3  "Chain 3"
-la var com11 "Combination (1) 1"
-la var com12 "Combination (1) 2"
-la var com13 "Combination (1) 3"
-la var com21 "Combination (2) 1"
-la var com22 "Combination (2) 1"
-la var com23 "Combination (2) 1"
-la var qua1  "Control Question 1"
-la var qua2  "Control Question 2"
-la var age   "Age"
-la var pol   "Political Orientation"
-la var gen   "Gender"
-la var edu   "Education"
-
-
-/* pilot, recoding */
-gen defrec11 = .
-   replace defrec11 = 1 if def11 == 7
-   replace defrec11 = 2 if def11 == 6
-   replace defrec11 = 3 if def11 == 5
-   replace defrec11 = 4 if def11 == 4
-   replace defrec11 = 5 if def11 == 3
-   replace defrec11 = 6 if def11 == 2
-   replace defrec11 = 7 if def11 == 1
-
-   la var defrec11 "Term 1, Statement 1 (Recoded)"
-   drop def11
-
-gen defrec12 = .
-   replace defrec12 = 1 if def12 == 7
-   replace defrec12 = 2 if def12 == 6
-   replace defrec12 = 3 if def12 == 5
-   replace defrec12 = 4 if def12 == 4
-   replace defrec12 = 5 if def12 == 3
-   replace defrec12 = 6 if def12 == 2
-   replace defrec12 = 7 if def12 == 1
-
-   la var defrec12 "Term 1, Statement 2 (Recoded)"
-   drop def12
-
-gen comrec11 = .
-   replace comrec11 = 1 if com11 == 7
-   replace comrec11 = 2 if com11 == 6
-   replace comrec11 = 3 if com11 == 5
-   replace comrec11 = 4 if com11 == 4
-   replace comrec11 = 5 if com11 == 3
-   replace comrec11 = 6 if com11 == 2
-   replace comrec11 = 7 if com11 == 1
-
-   la var comrec11 "Combination 1, Statement 1 (Recoded)"
-   drop com11
-
-gen comrec12 = .
-   replace comrec12 = 1 if com12 == 7
-   replace comrec12 = 2 if com12 == 6
-   replace comrec12 = 3 if com12 == 5
-   replace comrec12 = 4 if com12 == 4
-   replace comrec12 = 5 if com12 == 3
-   replace comrec12 = 6 if com12 == 2
-   replace comrec12 = 7 if com12 == 1
-
-   la var comrec12 "Combination 1, Statement 2 (Recoded)"
-   drop com12
-
-gen comrec13 = .
-   replace comrec13 = 1 if com13 == 7
-   replace comrec13 = 2 if com13 == 6
-   replace comrec13 = 3 if com13 == 5
-   replace comrec13 = 4 if com13 == 4
-   replace comrec13 = 5 if com13 == 3
-   replace comrec13 = 6 if com13 == 2
-   replace comrec13 = 7 if com13 == 1
-
-   la var comrec13 "Combination 1, Statement 3 (Recoded)"
-   drop com13
-
-
-/* pilot, summaries */
-preserve
-   keep if rep1 != .
-
-   tab gen
-   sum age, detail
-
-   ci means rep1
-   ci means rep2
-restore
-
-preserve
-   keep if eve11 != .
-
-   tab gen
-   sum age, detail
-
-   ci means eve11
-   ci means eve12
-restore
-
-preserve
-   keep if eve21 != .
-
-   tab gen
-   sum age, detail
-
-   ci means eve21
-   ci means eve22
-restore
-
-preserve
-   keep if defrec11 != .
-
-   tab gen
-   sum age, detail
-
-   ci means defrec11
-   ci means defrec12
-restore
-
-preserve
-   keep if def21 != .
-
-   tab gen
-   sum age, detail
-
-   ci means def21
-   ci means def22
-restore
-
-preserve
-   keep if cha1 != .
-
-   tab gen
-   sum age, detail
-
-   ci means cha1
-   ci means cha2
-   ci means cha3
-restore
-
-preserve
-   keep if comrec11 != .
-
-   tab gen
-   sum age, detail
-
-   ci means comrec11
-   ci means comrec12
-   ci means comrec13
-restore
-
-preserve
-   keep if com21 != .
-
-   tab gen
-   sum age, detail
-
-   ci means com21
-   ci means com22
-   ci means com23
-restore
-
-
-/* pilot, graphs */
-preserve
-   reshape long rep, i(id) j(statement)
-
-   collapse (mean) meantemp = rep (sd) sdtemp = rep (count) n = rep, by(statement)
-
-   generate hitemp = meantemp + invttail(n - 1,0.025) * (sdtemp / sqrt(n))
-   generate lotemp = meantemp - invttail(n - 1,0.025) * (sdtemp / sqrt(n))
-
-   graph twoway (bar meantemp statement) (rcap hitemp lotemp statement)
-   graph twoway (bar meantemp statement if statement == 1, bcolor(gs2) barw(0.4)) ///
-                (bar meantemp statement if statement == 2, bcolor(gs8) barw(0.4)) ///
-                (rcap hitemp lotemp statement), ///
-                xtitle(Statement) ///
-                xlabel(1(1)2) ///
-                ytitle(Mean of Agreement) ///
-                ylabel(1(1)7, angle(0)) ///
-                legend(label(1 "Gabi") label(2 "Kathrin") label(3 "95% CI")) ///
-                graphregion(fcolor(white))
-   graph export "pilot_study_1.pdf", as(pdf) replace
-restore
-
-preserve
-   reshape long eve1, i(id) j(statement)
-
-   collapse (mean) meantemp = eve1 (sd) sdtemp = eve1 (count) n = eve1, by(statement)
-
-   generate hitemp = meantemp + invttail(n - 1,0.025) * (sdtemp / sqrt(n))
-   generate lotemp = meantemp - invttail(n - 1,0.025) * (sdtemp / sqrt(n))
-
-   graph twoway (bar meantemp statement) (rcap hitemp lotemp statement)
-   graph twoway (bar meantemp statement if statement == 1, bcolor(gs2) barw(0.4)) ///
-                (bar meantemp statement if statement == 2, bcolor(gs8) barw(0.4)) ///
-                (rcap hitemp lotemp statement), ///
-                xtitle(Statement) ///
-                xlabel(1(1)2) ///
-                ytitle(Mean of Agreement) ///
-                ylabel(1(1)7) ///
-                legend(label(1 "Gabi") label(2 "Kathrin") label(3 "95% CI")) ///
-                graphregion(fcolor(white))
-   graph export "pilot_study_2.pdf", as(pdf) replace
-restore
-
-preserve
-   reshape long eve2, i(id) j(statement)
-
-   collapse (mean) meantemp = eve2 (sd) sdtemp = eve2 (count) n = eve2, by(statement)
-
-   generate hitemp = meantemp + invttail(n - 1,0.025) * (sdtemp / sqrt(n))
-   generate lotemp = meantemp - invttail(n - 1,0.025) * (sdtemp / sqrt(n))
-
-   graph twoway (bar meantemp statement) (rcap hitemp lotemp statement)
-   graph twoway (bar meantemp statement if statement == 1, bcolor(gs2) barw(0.4)) ///
-                (bar meantemp statement if statement == 2, bcolor(gs8) barw(0.4)) ///
-                (rcap hitemp lotemp statement), ///
-                xtitle(Statement) ///
-                xlabel(1(1)2) ///
-                ytitle(Mean of Agreement) ///
-                ylabel(1(1)7, angle(0)) ///
-                legend(label(1 "Gabi") label(2 "Kathrin") label(3 "95% CI")) ///
-                graphregion(fcolor(white))
-   graph export "pilot_study_3.pdf", as(pdf) replace
-restore
-
-preserve
-   reshape long defrec1, i(id) j(statement)
-
-   collapse (mean) meantemp = defrec1 (sd) sdtemp = defrec1 (count) n = defrec1, by(statement)
-
-   generate hitemp = meantemp + invttail(n - 1,0.025) * (sdtemp / sqrt(n))
-   generate lotemp = meantemp - invttail(n - 1,0.025) * (sdtemp / sqrt(n))
-
-   graph twoway (bar meantemp statement) (rcap hitemp lotemp statement)
-   graph twoway (bar meantemp statement if statement == 1, bcolor(gs2) barw(0.4)) ///
-                (bar meantemp statement if statement == 2, bcolor(gs8) barw(0.4)) ///
-                (rcap hitemp lotemp statement), ///
-                xtitle(Statement) ///
-                xlabel(1(1)2) ///
-                ytitle(Mean of Agreement) ///
-                ylabel(1(1)7, angle(0)) ///
-                legend(label(1 "Gabi") label(2 "Kathrin") label(3 "95% CI")) ///
-                graphregion(fcolor(white))
-   graph export "pilot_study_4.pdf", as(pdf) replace
-restore
-
-preserve
-   reshape long def2, i(id) j(statement)
-
-   collapse (mean) meantemp = def2 (sd) sdtemp = def2 (count) n = def2, by(statement)
-
-   generate hitemp = meantemp + invttail(n - 1,0.025) * (sdtemp / sqrt(n))
-   generate lotemp = meantemp - invttail(n - 1,0.025) * (sdtemp / sqrt(n))
-
-   graph twoway (bar meantemp statement) (rcap hitemp lotemp statement)
-   graph twoway (bar meantemp statement if statement == 1, bcolor(gs2) barw(0.4)) ///
-                (bar meantemp statement if statement == 2, bcolor(gs8) barw(0.4)) ///
-                (rcap hitemp lotemp statement), ///
-                xtitle(Statement) ///
-                xlabel(1(1)2) ///
-                ytitle(Mean of Agreement) ///
-                ylabel(1(1)7, angle(0)) ///
-                legend(label(1 "Gabi") label(2 "Kathrin") label(3 "95% CI")) ///
-                graphregion(fcolor(white))
-   graph export "pilot_study_5.pdf", as(pdf) replace
-restore
-
-preserve
-   reshape long cha, i(id) j(statement)
-
-   collapse (mean) meantemp = cha (sd) sdtemp = cha (count) n = cha, by(statement)
-
-   generate hitemp = meantemp + invttail(n - 1,0.025) * (sdtemp / sqrt(n))
-   generate lotemp = meantemp - invttail(n - 1,0.025) * (sdtemp / sqrt(n))
-
-   graph twoway (bar meantemp statement) (rcap hitemp lotemp statement)
-   graph twoway (bar meantemp statement if statement == 1, bcolor(gs2) barw(0.4)) ///
-                (bar meantemp statement if statement == 2, bcolor(gs4) barw(0.4)) ///
-                (bar meantemp statement if statement == 3, bcolor(gs8) barw(0.4)) ///
-                (rcap hitemp lotemp statement), ///
-                xtitle(Statement) ///
-                xlabel(1(1)2) ///
-                ytitle(Mean of Agreement) ///
-                ylabel(1(1)7, angle(0)) ///
-                legend(label(1 "Gabi") label(2 "Kathrin") label(3 "Nele") label(4 "95% CI")) ///
-                graphregion(fcolor(white))
-   graph export "pilot_study_6.pdf", as(pdf) replace
-restore
-
-preserve
-   reshape long comrec1, i(id) j(statement)
-
-   collapse (mean) meantemp = comrec1 (sd) sdtemp = comrec1 (count) n = comrec1, by(statement)
-
-   generate hitemp = meantemp + invttail(n - 1,0.025) * (sdtemp / sqrt(n))
-   generate lotemp = meantemp - invttail(n - 1,0.025) * (sdtemp / sqrt(n))
-
-   graph twoway (bar meantemp statement) (rcap hitemp lotemp statement)
-   graph twoway (bar meantemp statement if statement == 1, bcolor(gs2) barw(0.4)) ///
-                (bar meantemp statement if statement == 2, bcolor(gs4) barw(0.4)) ///
-                (bar meantemp statement if statement == 3, bcolor(gs8) barw(0.4)) ///
-                (rcap hitemp lotemp statement), ///
-                xtitle(Statement) ///
-                xlabel(1(1)2) ///
-                ytitle(Mean of Agreement) ///
-                ylabel(1(1)7, angle(0)) ///
-                legend(label(1 "Gabi") label(2 "Kathrin") label(3 "Nele") label(4 "95% CI")) ///
-                graphregion(fcolor(white))
-   graph export "pilot_study_7.pdf", as(pdf) replace
-restore
-
-preserve
-   reshape long com2, i(id) j(statement)
-
-   collapse (mean) meantemp = com2 (sd) sdtemp = com2 (count) n = com2, by(statement)
-
-   generate hitemp = meantemp + invttail(n - 1,0.025) * (sdtemp / sqrt(n))
-   generate lotemp = meantemp - invttail(n - 1,0.025) * (sdtemp / sqrt(n))
-
-   graph twoway (bar meantemp statement) (rcap hitemp lotemp statement)
-   graph twoway (bar meantemp statement if statement == 1, bcolor(gs2) barw(0.4)) ///
-                (bar meantemp statement if statement == 2, bcolor(gs4) barw(0.4)) ///
-                (bar meantemp statement if statement == 3, bcolor(gs8) barw(0.4)) ///
-                (rcap hitemp lotemp statement), ///
-                xtitle(Statement) ///
-                xlabel(1(1)2) ///
-                ytitle(Mean of Agreement) ///
-                ylabel(1(1)7, angle(0)) ///
-                legend(label(1 "Gabi") label(2 "Kathrin") label(3 "Nele") label(4 "95% CI")) ///
-                graphregion(fcolor(white))
-   graph export "pilot_study_8.pdf", as(pdf) replace
-restore
-
-
-/* pilot, tests */
-preserve
-   ren eve11 temp1
-   ren eve21 temp2
-
-   reshape long temp, i(id) j(condition)
-
-   ranksum temp, by(condition)
-restore
-
-preserve
-   ren eve21 temp1
-   ren eve22 temp2
-
-   reshape long temp, i(id) j(condition)
-
-   ranksum temp, by(condition)
-restore
-
-preserve
-   ren defrec11 temp1
-   ren def21 temp2
-
-   reshape long temp, i(id) j(condition)
-
-   ranksum temp, by(condition)
-restore
-
-preserve
-   ren defrec12 temp1
-   ren def22 temp2
-
-   reshape long temp, i(id) j(condition)
-
-   ranksum temp, by(condition)
-restore
-
-preserve
-   ren comrec11 temp1
-   ren com21 temp2
-
-   reshape long temp, i(id) j(condition)
-
-   ranksum temp, by(condition)
-restore
-
-preserve
-   ren comrec12 temp1
-   ren com22 temp2
-
-   reshape long temp, i(id) j(condition)
-
-   ranksum temp, by(condition)
-restore
-
-preserve
-   ren comrec13 temp1
-   ren com23 temp2
-
-   reshape long temp, i(id) j(condition)
-
-   ranksum temp, by(condition)
-restore
-
-
-/* main study, labels */
-use "data_main.dta", clear
-
-label define gen_lb 1 "Female" 2 "Diverse" 3 "Male"
-   label values gen gen_lb
-
-label define edu_lb 1 "Without School Qualification" 2 "Still in School" 3 "Secondary Modern School Qualification" 4 "Polytechnic Secondary School Qualification" 5 "Secondary School Qualification" 6 "University (of Applied Sciences) Entrance Qualification" 7 "Dual Vocational Education and Training" 8 "Professional School Degree" 9 "University of Applied Sciences Degree" 10 "University Degree" 11 "Bachelor" 12 "Master" 13 "Magister" 14 "Diploma" 15 "Doctorate" 16 "Habilitation"
-   label values edu edu_lb
-
-la var id           "Identification Number"
-la var lastpage     "Last Page"
-la var study        "Study"
-la var vig1rep1     "Vignette 1, Replication 1"
-la var vig1rep2     "Vignette 1, Replication 2"
-la var vig1eve11    "Vignette 1, Event 1"
-la var vig1eve12    "Vignette 1, Event 2"
-la var vig1eve21    "Vignette 1, Event Without Name 1"
-la var vig1eve22    "Vignette 1, Event Without Name 2"
-la var vig1def1     "Vignette 1, Term 1"
-la var vig1def2     "Vignette 1, Term 2"
-la var vig1cha1     "Vignette 1, Chain 1"
-la var vig1cha2     "Vignette 1, Chain 2"
-la var vig1cha3     "Vignette 1, Chain 3"
-la var vig1com1     "Vignette 1, Combination 1"
-la var vig1com2     "Vignette 1, Combination 2"
-la var vig1com3     "Vignette 1, Combination 3"
-la var vig1qua1     "Vignette 1, Control Question 1"
-la var vig1qua2     "Vignette 1, Control Question 2"
-la var vig1qua3     "Vignette 1, Control Question 3"
-la var vig2rep1     "Vignette 2, Replication 1"
-la var vig2rep2     "Vignette 2, Replication 2"
-la var vig2rep3     "Vignette 2, Replication 3"
-la var vig2rep4     "Vignette 2, Replication 4"
-la var vig2eve1     "Vignette 2, Event 1"
-la var vig2eve2     "Vignette 2, Event 2"
-la var vig2eve3     "Vignette 2, Event 3"
-la var vig2eve4     "Vignette 2, Event 4"
-la var vig2def1     "Vignette 2, Term 1"
-la var vig2def2     "Vignette 2, Term 2"
-la var vig2def3     "Vignette 2, Term 3"
-la var vig2def4     "Vignette 2, Term 4"
-la var vig2cha1     "Vignette 2, Chain 1"
-la var vig2cha2     "Vignette 2, Chain 2"
-la var vig2cha3     "Vignette 2, Chain 3"
-la var vig2cha4     "Vignette 2, Chain 4"
-la var vig2com1     "Vignette 2, Combination 1"
-la var vig2com2     "Vignette 2, Combination 2"
-la var vig2com3     "Vignette 2, Combination 3"
-la var vig2com4     "Vignette 2, Combination 4"
-la var vig2qua1     "Vignette 2, Control Question 1"
-la var veg2qua2     "Vignette 2, Control Question 2"
-la var vig2qua3     "Vignette 2, Control Question 3"
-la var vig3rep1     "Vignette 3, Replication 1"
-la var vig3rep2     "Vignette 3, Replication 2"
-la var vig3eve1     "Vignette 3, Event 1"
-la var vig3eve2     "Vignette 3, Event 2"
-la var vig3def11    "Vignette 3, Term With Conditional 1"
-la var vig3def12    "Vignette 3, Term With Conditional 2"
-la var vig3def21    "Vignette 3, Term 1"
-la var vig3def22    "Vignette 3, Term 2"
-la var vig3cha1     "Vignette 3, Chain 1"
-la var vig3cha2     "Vignette 3, Chain 2"
-la var vig3cha3     "Vignette 3, Chain 3"
-la var vig3com11    "Vignette 3, Combination With Conditional 1"
-la var vig3com12    "Vignette 3, Combination With Conditional 2"
-la var vig3com13    "Vignette 3, Combination With Conditional 3"
-la var vig3com21    "Vignette 3, Combination 1"
-la var vig3com22    "Vignette 3, Combination 2"
-la var vig3com23    "Vignette 3, Combination 3"
-la var vig3qua1     "Vignette 3, Control Question 1"
-la var vig3qua2     "Vignette 3, Control Question 2"
-la var vig3qua3     "Vignette 3, Control Question 3"
-la var age          "Age"
-la var pol          "Political Orientation"
-la var gen          "Gender"
-la var edu          "Education"
-
-
-/* main study, quality fails */
+la var id        "Identification Number"
+la var lastpage  "Last Page"
+la var study     "Study"
+la var vig1rep1  "Vignette 1, Replication 1"
+la var vig1rep2  "Vignette 1, Replication 2"
+la var vig1eve11 "Vignette 1, Event 1"
+la var vig1eve12 "Vignette 1, Event 2"
+la var vig1eve21 "Vignette 1, Event Without Name 1"
+la var vig1eve22 "Vignette 1, Event Without Name 2"
+la var vig1def1  "Vignette 1, Term 1"
+la var vig1def2  "Vignette 1, Term 2"
+la var vig1cha1  "Vignette 1, Chain 1"
+la var vig1cha2  "Vignette 1, Chain 2"
+la var vig1cha3  "Vignette 1, Chain 3"
+la var vig1com1  "Vignette 1, Combination 1"
+la var vig1com2  "Vignette 1, Combination 2"
+la var vig1com3  "Vignette 1, Combination 3"
+la var vig1qua1  "Vignette 1, Control Question 1"
+la var vig1qua2  "Vignette 1, Control Question 2"
+la var vig1qua3  "Vignette 1, Control Question 3"
+la var vig2rep1  "Vignette 2, Replication 1"
+la var vig2rep2  "Vignette 2, Replication 2"
+la var vig2rep3  "Vignette 2, Replication 3"
+la var vig2rep4  "Vignette 2, Replication 4"
+la var vig2eve1  "Vignette 2, Event 1"
+la var vig2eve2  "Vignette 2, Event 2"
+la var vig2eve3  "Vignette 2, Event 3"
+la var vig2eve4  "Vignette 2, Event 4"
+la var vig2def1  "Vignette 2, Term 1"
+la var vig2def2  "Vignette 2, Term 2"
+la var vig2def3  "Vignette 2, Term 3"
+la var vig2def4  "Vignette 2, Term 4"
+la var vig2cha1  "Vignette 2, Chain 1"
+la var vig2cha2  "Vignette 2, Chain 2"
+la var vig2cha3  "Vignette 2, Chain 3"
+la var vig2cha4  "Vignette 2, Chain 4"
+la var vig2com1  "Vignette 2, Combination 1"
+la var vig2com2  "Vignette 2, Combination 2"
+la var vig2com3  "Vignette 2, Combination 3"
+la var vig2com4  "Vignette 2, Combination 4"
+la var vig2qua1  "Vignette 2, Control Question 1"
+la var veg2qua2  "Vignette 2, Control Question 2"
+la var vig2qua3  "Vignette 2, Control Question 3"
+la var vig3rep1  "Vignette 3, Replication 1"
+la var vig3rep2  "Vignette 3, Replication 2"
+la var vig3eve1  "Vignette 3, Event 1"
+la var vig3eve2  "Vignette 3, Event 2"
+la var vig3def11 "Vignette 3, Term With Conditional 1"
+la var vig3def12 "Vignette 3, Term With Conditional 2"
+la var vig3def21 "Vignette 3, Term 1"
+la var vig3def22 "Vignette 3, Term 2"
+la var vig3cha1  "Vignette 3, Chain 1"
+la var vig3cha2  "Vignette 3, Chain 2"
+la var vig3cha3  "Vignette 3, Chain 3"
+la var vig3com11 "Vignette 3, Combination With Conditional 1"
+la var vig3com12 "Vignette 3, Combination With Conditional 2"
+la var vig3com13 "Vignette 3, Combination With Conditional 3"
+la var vig3com21 "Vignette 3, Combination 1"
+la var vig3com22 "Vignette 3, Combination 2"
+la var vig3com23 "Vignette 3, Combination 3"
+la var vig3qua1  "Vignette 3, Control Question 1"
+la var vig3qua2  "Vignette 3, Control Question 2"
+la var vig3qua3  "Vignette 3, Control Question 3"
+la var age       "Age"
+la var pol       "Political Orientation"
+la var gen       "Gender"
+la var edu       "Education"
+
+
+/* Quality fails */
 gen quality_fail = .
    encode vig1qua1, generate(quality_1)
    encode vig1qua2, generate(quality_2)
@@ -541,12 +135,12 @@ gen quality_fail = .
    la var quality_fail "Quality Fail"
 
 
-/* main study, sippy cup */
+/* Sippy cup */
 drop if quality_fail == 1
 keep if lastpage == 37
 
 
-preserve /* vignette 1, replication */
+preserve /* Vignette 1, replication */
    keep if vig1rep1 != .
    keep if vig1qua1 != ""
 
@@ -569,7 +163,7 @@ preserve /* vignette 1, replication */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "cup_rep_hist_1.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_cup_rep_hist_1.pdf", as(pdf) replace
 
    hist vig1rep2, percent discrete barwidth(.8) ///
       xtitle(Responses) ///
@@ -577,7 +171,7 @@ preserve /* vignette 1, replication */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "cup_rep_hist_2.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_cup_rep_hist_2.pdf", as(pdf) replace
 
    reshape long vig1rep, i(id) j(statement)
 
@@ -596,11 +190,11 @@ preserve /* vignette 1, replication */
                 ylabel(1(1)7, angle(0)) ///
                 legend(label(1 "Gabi") label(2 "Kathrin") label(3 "95% CI")) ///
                 graphregion(fcolor(white))
-   graph export "cup_rep_bar.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_cup_rep_bar.pdf", as(pdf) replace
 restore
 
 
-preserve /* vignette 1, event */
+preserve /* Vignette 1, event */
    keep if vig1eve11 != .
    keep if vig1qua1  != ""
 
@@ -623,7 +217,7 @@ preserve /* vignette 1, event */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "cup_ioc_1_hist_1.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_cup_ioc_1_hist_1.pdf", as(pdf) replace
 
    hist vig1eve12, percent discrete barwidth(.8) ///
       xtitle(Responses) ///
@@ -631,7 +225,7 @@ preserve /* vignette 1, event */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "cup_ioc_1_hist_2.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_cup_ioc_1_hist_2.pdf", as(pdf) replace
 
    reshape long vig1eve1, i(id) j(statement)
 
@@ -650,11 +244,11 @@ preserve /* vignette 1, event */
                 ylabel(1(1)7, angle(0)) ///
                 legend(label(1 "Gabi") label(2 "Kathrin") label(3 "95% CI")) ///
                 graphregion(fcolor(white))
-   graph export "cup_ioc_1_bar.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_cup_ioc_1_bar.pdf", as(pdf) replace
 restore
 
 
-preserve /* vignette 1, event without name */
+preserve /* Vignette 1, event without name */
    keep if vig1eve21 != .
    keep if vig1qua1  != ""
    drop if age       == 606
@@ -679,7 +273,7 @@ preserve /* vignette 1, event without name */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "cup_ioc_2_hist_1.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_cup_ioc_2_hist_1.pdf", as(pdf) replace
 
    hist vig1eve22, percent discrete barwidth(.8) ///
       xtitle(Responses) ///
@@ -687,7 +281,7 @@ preserve /* vignette 1, event without name */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "cup_ioc_2_hist_2.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_cup_ioc_2_hist_2.pdf", as(pdf) replace
 
    reshape long vig1eve2, i(id) j(statement)
 
@@ -706,11 +300,11 @@ preserve /* vignette 1, event without name */
                 ylabel(1(1)7, angle(0)) ///
                 legend(label(1 "Gabi") label(2 "Kathrin") label(3 "95% CI")) ///
                 graphregion(fcolor(white))
-   graph export "cup_ioc_2_bar.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_cup_ioc_2_bar.pdf", as(pdf) replace
 restore
 
 
-preserve /* vignette 1, term */
+preserve /* Vignette 1, term */
    keep if vig1def1 != .
    keep if vig1qua1 != ""
 
@@ -735,7 +329,7 @@ preserve /* vignette 1, term */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "cup_crc_hist_1.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_cup_crc_hist_1.pdf", as(pdf) replace
 
    hist vig1def2, percent discrete barwidth(.8) ///
       xtitle(Responses) ///
@@ -743,7 +337,7 @@ preserve /* vignette 1, term */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "cup_crc_hist_2.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_cup_crc_hist_2.pdf", as(pdf) replace
 
    reshape long vig1def, i(id) j(statement)
 
@@ -762,11 +356,11 @@ preserve /* vignette 1, term */
                 ylabel(1(1)7, angle(0)) ///
                 legend(label(1 "Gabi") label(2 "Kathrin") label(3 "95% CI")) ///
                 graphregion(fcolor(white))
-   graph export "cup_crc_bar.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_cup_crc_bar.pdf", as(pdf) replace
 restore
 
 
-preserve /* vignette 1, chain */
+preserve /* Vignette 1, chain */
    keep if vig1cha1 != .
    keep if vig1qua1 != ""
 
@@ -797,7 +391,7 @@ preserve /* vignette 1, chain */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "cup_ceq_hist_1.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_cup_ceq_hist_1.pdf", as(pdf) replace
 
    hist vig1cha2, percent discrete barwidth(.8) ///
       xtitle(Responses) ///
@@ -805,7 +399,7 @@ preserve /* vignette 1, chain */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "cup_ceq_hist_2.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_cup_ceq_hist_2.pdf", as(pdf) replace
 
    hist vig1cha3, percent discrete barwidth(.8) ///
       xtitle(Responses) ///
@@ -813,7 +407,7 @@ preserve /* vignette 1, chain */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "cup_ceq_hist_3.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_cup_ceq_hist_3.pdf", as(pdf) replace
 
    reshape long vig1cha, i(id) j(statement)
 
@@ -833,11 +427,11 @@ preserve /* vignette 1, chain */
                 ylabel(1(1)7, angle(0)) ///
                 legend(label(1 "Gabi") label(2 "Kathrin") label(3 "Nele") label(4 "95% CI")) ///
                 graphregion(fcolor(white))
-   graph export "cup_ceq_bar.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_cup_ceq_bar.pdf", as(pdf) replace
 restore
 
 
-preserve /* vignette 1, combination */
+preserve /* Vignette 1, combination */
    keep if vig1com1 != .
    keep if vig1qua1 != ""
 
@@ -868,7 +462,7 @@ preserve /* vignette 1, combination */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "cup_com_hist_1.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_cup_com_hist_1.pdf", as(pdf) replace
 
    hist vig1com2, percent discrete barwidth(.8) ///
       xtitle(Responses) ///
@@ -876,7 +470,7 @@ preserve /* vignette 1, combination */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "cup_com_hist_2.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_cup_com_hist_2.pdf", as(pdf) replace
 
    hist vig1com3, percent discrete barwidth(.8) ///
       xtitle(Responses) ///
@@ -904,11 +498,11 @@ preserve /* vignette 1, combination */
                 ylabel(1(1)7, angle(0)) ///
                 legend(label(1 "Gabi") label(2 "Kathrin") label(3 "Nele") label(4 "95% CI")) ///
                 graphregion(fcolor(white))
-   graph export "cup_com_bar.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_cup_com_bar.pdf", as(pdf) replace
 restore
 
 
-preserve /* vignette 1, ranksum tests */
+preserve /* Vignette 1, ranksum tests */
    ren vig1rep1 temp1
    ren vig1eve11 temp2
 
@@ -1009,8 +603,8 @@ preserve
 restore
 
 
-/* main study, revolver */
-preserve /* vignette 2, replication */
+/* Revolver */
+preserve /* Vignette 2, replication */
    keep if vig2rep1 != .
    keep if vig2qua1 != ""
 
@@ -1115,7 +709,7 @@ preserve /* vignette 2, replication */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "rev_rep_hist_1.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_rev_rep_hist_1.pdf", as(pdf) replace
 
    hist vig2rep2, percent discrete barwidth(.8) ///
       xtitle(Responses) ///
@@ -1123,7 +717,7 @@ preserve /* vignette 2, replication */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "rev_rep_hist_2.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_rev_rep_hist_2.pdf", as(pdf) replace
 
    hist vig2rep3, percent discrete barwidth(.8) ///
       xtitle(Responses) ///
@@ -1131,7 +725,7 @@ preserve /* vignette 2, replication */
       yscale(range(0 100)) ///
 	  ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "rev_rep_hist_3.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_rev_rep_hist_3.pdf", as(pdf) replace
 
    hist vig2rep4, percent discrete barwidth(.8) ///
       xtitle(Responses) ///
@@ -1139,7 +733,7 @@ preserve /* vignette 2, replication */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "rev_rep_hist_4.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_rev_rep_hist_4.pdf", as(pdf) replace
 
    reshape long vig2rep, i(id) j(statement)
 
@@ -1160,11 +754,11 @@ preserve /* vignette 2, replication */
                 ylabel(1(1)7, angle(0)) ///
                 legend(label(1 "Leeve") label(2 "Hammer") label(3 "Gunpowder") label(4 "Bullet") label(5 "95% CI")) ///
                 graphregion(fcolor(white))
-   graph export "rev_rep_bar.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_rev_rep_bar.pdf", as(pdf) replace
 restore
 
 
-preserve /* vignette 2, event */
+preserve /* Vignette 2, event */
    keep if vig2eve1 != .
    keep if vig2qua1 != ""
 
@@ -1201,7 +795,7 @@ preserve /* vignette 2, event */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "rev_ioc_hist_1.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_rev_ioc_hist_1.pdf", as(pdf) replace
 
    hist vig2eve2, percent discrete barwidth(.8) ///
       xtitle(Responses) ///
@@ -1209,7 +803,7 @@ preserve /* vignette 2, event */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "rev_ioc_hist_2.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_rev_ioc_hist_2.pdf", as(pdf) replace
 
    hist vig2eve3, percent discrete barwidth(.8) ///
       xtitle(Responses) ///
@@ -1217,7 +811,7 @@ preserve /* vignette 2, event */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "rev_ioc_hist_3.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_rev_ioc_hist_3.pdf", as(pdf) replace
 
    hist vig2eve4, percent discrete barwidth(.8) ///
       xtitle(Responses) ///
@@ -1225,7 +819,7 @@ preserve /* vignette 2, event */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "rev_ioc_hist_4.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_rev_ioc_hist_4.pdf", as(pdf) replace
 
    reshape long vig2eve, i(id) j(statement)
 
@@ -1246,11 +840,11 @@ preserve /* vignette 2, event */
                 ylabel(1(1)7, angle(0)) ///
                 legend(label(1 "Leeve") label(2 "Hammer") label(3 "Gunpowder") label(4 "Bullet") label(5 "95% CI")) ///
                 graphregion(fcolor(white))
-   graph export "rev_ioc_bar.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_rev_ioc_bar.pdf", as(pdf) replace
 restore
 
 
-preserve /* vignette 2, term */
+preserve /* Vignette 2, term */
    keep if vig2def1 != .
    keep if vig2qua1 != ""
 
@@ -1287,7 +881,7 @@ preserve /* vignette 2, term */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "rev_crc_hist_1.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_rev_crc_hist_1.pdf", as(pdf) replace
 
    hist vig2def2, percent discrete barwidth(.8) ///
       xtitle(Responses) ///
@@ -1295,7 +889,7 @@ preserve /* vignette 2, term */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "rev_crc_hist_2.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_rev_crc_hist_2.pdf", as(pdf) replace
 
    hist vig2def3, percent discrete barwidth(.8) ///
       xtitle(Responses) ///
@@ -1303,7 +897,7 @@ preserve /* vignette 2, term */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "rev_crc_hist_3.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_rev_crc_hist_3.pdf", as(pdf) replace
 
    hist vig2def4, percent discrete barwidth(.8) ///
       xtitle(Responses) ///
@@ -1311,7 +905,7 @@ preserve /* vignette 2, term */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "rev_crc_hist_4.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_rev_crc_hist_4.pdf", as(pdf) replace
 
    reshape long vig2def, i(id) j(statement)
 
@@ -1332,11 +926,11 @@ preserve /* vignette 2, term */
                 ylabel(1(1)7, angle(0)) ///
                 legend(label(1 "Leeve") label(2 "Hammer") label(3 "Gunpowder") label(4 "Bullet") label(5 "95% CI")) ///
                 graphregion(fcolor(white))
-   graph export "rev_crc_bar.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_rev_crc_bar.pdf", as(pdf) replace
 restore
 
 
-preserve /* vignette 2, chain */
+preserve /* Vignette 2, chain */
    keep if vig2cha1 != .
    keep if vig2qua1 != ""
 
@@ -1373,7 +967,7 @@ preserve /* vignette 2, chain */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "rev_ceq_hist_1.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_rev_ceq_hist_1.pdf", as(pdf) replace
 
    hist vig2cha2, percent discrete barwidth(.8) ///
       xtitle(Responses) ///
@@ -1381,7 +975,7 @@ preserve /* vignette 2, chain */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "rev_ceq_hist_2.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_rev_ceq_hist_2.pdf", as(pdf) replace
 
    hist vig2cha3, percent discrete barwidth(.8) ///
       xtitle(Responses) ///
@@ -1389,7 +983,7 @@ preserve /* vignette 2, chain */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-	graph export "rev_ceq_hist_3.pdf", as(pdf) replace
+	graph export "causality_compositionality_main_rev_ceq_hist_3.pdf", as(pdf) replace
 
    hist vig2cha4, percent discrete barwidth(.8) ///
       xtitle(Responses) ///
@@ -1397,7 +991,7 @@ preserve /* vignette 2, chain */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "rev_ceq_hist_4.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_rev_ceq_hist_4.pdf", as(pdf) replace
 
    reshape long vig2cha, i(id) j(statement)
 
@@ -1418,11 +1012,11 @@ preserve /* vignette 2, chain */
                 ylabel(1(1)7, angle(0)) ///
                 legend(label(1 "Leeve") label(2 "Hammer") label(3 "Gunpowder") label(4 "Bullet") label(5 "95% CI")) ///
                 graphregion(fcolor(white))
-   graph export "rev_ceq_bar.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_rev_ceq_bar.pdf", as(pdf) replace
 restore
 
 
-preserve /* vignette 2, combination */
+preserve /* Vignette 2, combination */
    keep if vig2com1 != .
    keep if vig2qua1 != ""
 
@@ -1459,7 +1053,7 @@ preserve /* vignette 2, combination */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "rev_com_hist_1.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_rev_com_hist_1.pdf", as(pdf) replace
 
    hist vig2com2, percent discrete barwidth(.8) ///
       xtitle(Responses) ///
@@ -1467,7 +1061,7 @@ preserve /* vignette 2, combination */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "rev_com_hist_2.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_rev_com_hist_2.pdf", as(pdf) replace
 
    hist vig2com3, percent discrete barwidth(.8) ///
       xtitle(Responses) ///
@@ -1475,7 +1069,7 @@ preserve /* vignette 2, combination */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "rev_com_hist_3.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_rev_com_hist_3.pdf", as(pdf) replace
 
    hist vig2com4, percent discrete barwidth(.8) ///
       xtitle(Responses) ///
@@ -1483,7 +1077,7 @@ preserve /* vignette 2, combination */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "rev_com_hist_4.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_rev_com_hist_4.pdf", as(pdf) replace
 
    reshape long vig2com, i(id) j(statement)
 
@@ -1504,11 +1098,11 @@ preserve /* vignette 2, combination */
                 ylabel(1(1)7, angle(0)) ///
                 legend(label(1 "Leeve") label(2 "Hammer") label(3 "Gunpowder") label(4 "Bullet") label(5 "95% CI")) ///
                 graphregion(fcolor(white))
-   graph export "rev_com_bar.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_rev_com_bar.pdf", as(pdf) replace
 restore
 
 
-preserve /* vignette 2, ranksum tests */
+preserve /* Vignette 2, ranksum tests */
    ren vig2rep1 temp1
    ren vig2eve1 temp2
 
@@ -1669,8 +1263,8 @@ preserve
 restore
 
 
-/* main study, experiment */
-preserve /* vignette 3, replication */
+/* Experiment */
+preserve /* Vignette 3, replication */
    keep if vig3rep1 != .
    keep if vig3qua1 != ""
 
@@ -1695,7 +1289,7 @@ preserve /* vignette 3, replication */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "cir_rep_hist_1.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_cir_rep_hist_1.pdf", as(pdf) replace
 
    hist vig3rep2, percent discrete barwidth(.8) ///
       xtitle(Responses) ///
@@ -1703,7 +1297,7 @@ preserve /* vignette 3, replication */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "cir_rep_hist_2.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_cir_rep_hist_2.pdf", as(pdf) replace
 
    reshape long vig3rep, i(id) j(statement)
 
@@ -1722,11 +1316,11 @@ preserve /* vignette 3, replication */
                 ylabel(1(1)7, angle(0)) ///
                 legend(label(1 "Pipe") label(2 "Circuit") label(3 "95% CI")) ///
                 graphregion(fcolor(white))
-   graph export "cir_rep_bar.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_cir_rep_bar.pdf", as(pdf) replace
 restore
 
 
-preserve /* vignette 3, event */
+preserve /* Vignette 3, event */
    keep if vig3eve1 != .
    keep if vig3qua1 != ""
 
@@ -1751,7 +1345,7 @@ preserve /* vignette 3, event */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "cir_ioc_hist_1.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_cir_ioc_hist_1.pdf", as(pdf) replace
 
    hist vig3eve2, percent discrete barwidth(.8) ///
       xtitle(Responses) ///
@@ -1759,7 +1353,7 @@ preserve /* vignette 3, event */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "cir_ioc_hist_2.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_cir_ioc_hist_2.pdf", as(pdf) replace
 
    reshape long vig3eve, i(id) j(statement)
 
@@ -1778,11 +1372,11 @@ preserve /* vignette 3, event */
                 ylabel(1(1)7, angle(0)) ///
                 legend(label(1 "Pipe") label(2 "Circuit") label(3 "95% CI")) ///
                 graphregion(fcolor(white))
-   graph export "cir_ioc_bar.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_cir_ioc_bar.pdf", as(pdf) replace
 restore
 
 
-preserve /* vignette 3, term with conditional */
+preserve /* Vignette 3, term with conditional */
    keep if vig3def11 != .
    keep if vig3qua1  != ""
 
@@ -1807,7 +1401,7 @@ preserve /* vignette 3, term with conditional */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "cir_crc_hist_1.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_cir_crc_hist_1.pdf", as(pdf) replace
 
    hist vig3def12, percent discrete barwidth(.8) ///
       xtitle(Responses) ///
@@ -1815,7 +1409,7 @@ preserve /* vignette 3, term with conditional */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "cir_crc_hist_2.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_cir_crc_hist_2.pdf", as(pdf) replace
 
    reshape long vig3def1, i(id) j(statement)
 
@@ -1833,11 +1427,11 @@ preserve /* vignette 3, term with conditional */
                 ylabel(1(1)7, angle(0)) ///
                 legend(label(1 "Pipe") label(2 "Circuit") label(3 "95% CI")) ///
                 graphregion(fcolor(white))
-   graph export "cir_crc_bar.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_cir_crc_bar.pdf", as(pdf) replace
 restore
 
 
-preserve /* vignette 3, term */
+preserve /* Vignette 3, term */
    keep if vig3def21 != .
    keep if vig3qua1  != ""
 
@@ -1890,7 +1484,7 @@ preserve /* vignette 3, term */
 restore
 
 
-preserve /* vignette 3, chain */
+preserve /* Vignette 3, chain */
    keep if vig3cha1 != .
    keep if vig3qua1 != ""
 
@@ -1921,7 +1515,7 @@ preserve /* vignette 3, chain */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "cir_ceq_hist_1.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_cir_ceq_hist_1.pdf", as(pdf) replace
 
    hist vig3cha2, percent discrete barwidth(.8) ///
       xtitle(Responses) ///
@@ -1929,7 +1523,7 @@ preserve /* vignette 3, chain */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "cir_ceq_hist_2.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_cir_ceq_hist_2.pdf", as(pdf) replace
 
    hist vig3cha3, percent discrete barwidth(.8) ///
       xtitle(Responses) ///
@@ -1937,7 +1531,7 @@ preserve /* vignette 3, chain */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "cir_ceq_hist_3.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_cir_ceq_hist_3.pdf", as(pdf) replace
 
    reshape long vig3cha, i(id) j(statement)
 
@@ -1957,11 +1551,11 @@ preserve /* vignette 3, chain */
                 ylabel(1(1)7, angle(0)) ///
                 legend(label(1 "Pipe") label(2 "Circuit") label(3 "Lamp") label(4 "95% CI")) ///
                 graphregion(fcolor(white))
-   graph export "cir_ceq_bar.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_cir_ceq_bar.pdf", as(pdf) replace
 restore
 
 
-preserve /* vignette 3, combination with conditional */
+preserve /* Vignette 3, combination with conditional */
    keep if vig3com11 != .
    keep if vig3qua1  != ""
 
@@ -1992,7 +1586,7 @@ preserve /* vignette 3, combination with conditional */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "cir_com_hist_1.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_cir_com_hist_1.pdf", as(pdf) replace
 
    hist vig3com12, percent discrete barwidth(.8) ///
       xtitle(Responses) ///
@@ -2000,7 +1594,7 @@ preserve /* vignette 3, combination with conditional */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "cir_com_hist_2.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_cir_com_hist_2.pdf", as(pdf) replace
 
    hist vig3com13, percent discrete barwidth(.8) ///
       xtitle(Responses) ///
@@ -2008,7 +1602,7 @@ preserve /* vignette 3, combination with conditional */
       yscale(range(0 100)) ///
       ylabel(0(10)100, angle(0)) ///
       graphregion(fcolor(white))
-   graph export "cir_com_hist_3.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_cir_com_hist_3.pdf", as(pdf) replace
 
    reshape long vig3com1, i(id) j(statement)
 
@@ -2028,11 +1622,11 @@ preserve /* vignette 3, combination with conditional */
                 ylabel(1(1)7, angle(0)) ///
                 legend(label(1 "Pipe") label(2 "Circuit") label(3 "Lamp") label(4 "95% CI")) ///
 				graphregion(fcolor(white))
-   graph export "cir_com_bar.pdf", as(pdf) replace
+   graph export "causality_compositionality_main_cir_com_bar.pdf", as(pdf) replace
 restore
 
 
-preserve /* vignette 3, combination */
+preserve /* Vignette 3, combination */
    keep if vig3com21 != .
    keep if vig3qua1  != ""
 
@@ -2099,7 +1693,7 @@ preserve /* vignette 3, combination */
 restore
 
 
-preserve /* vignette 3, ranksum tests */
+preserve /* Vignette 3, ranksum tests */
    ren vig3rep1 temp1
    ren vig3eve1 temp2
 
